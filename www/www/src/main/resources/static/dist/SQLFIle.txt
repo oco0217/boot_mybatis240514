@@ -1,0 +1,22 @@
+boot DB 설정
+
+CREATE TABLE board(
+bno bigint auto_increment,
+title varchar(200) not null,
+writer varchar(200) not null,
+content text not null,
+reg_at datetime default now(),
+mod_at datetime default now(),
+primary key(bno));
+
+file table
+
+create table file(
+uuid varchar(256) not null,
+save_dir varchar(256) not null,
+file_name varchar(256) not null,
+file_type int(1) default 0,
+bno bigint not null,
+file_size bigint not null,
+reg_at datetime default now(),
+primary key(uuid));

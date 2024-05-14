@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezen.www.repository.BoardMapper">
+
+    <insert id="register">
+        INSERT INTO board (title, writer, content)
+        VALUES (#{title}, #{writer}, #{content})
+    </insert>
+
+    <select id="getList" resultType="com.ezen.www.domain.BoardVO">
+        SELECT * FROM board
+        <include refid="search"></include>
+        ORDER BY bno DESC
+        limit #{pageStart}, #{qty}
+    </select>
+
+    <select id="getDetail" resultType="com.ezen.www.domain.BoardVO">
+        SELECT * FROM board
+        WHERE bno = #{bno}
+    </select>
+    
+    <update id="update">
+        UPDATE board SET
+        title = #{title},
+        content = #{content},
+        mod_at = now()
+        WHERE
+        bno = #{bno}
+    </update>
+    
+    <delete id="remove">
+        DELETE FROM board
+        WHERE bno = #{bno}
+    </delete>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(bno) FROM board
+        <include refid="search"></include>
+    </select>
+
+    <select id="getBno" resultType="long">
+        SELECT max(bno) FROM board
+    </select>
+
+    <sql id="search">
+        <if test="type != null">
+            <trim prefix="where (" suffix=")" suffixOverrides="or">
+                <foreach collection="typeToArray" item="type">
+                    <trim suffix="or">
+                        <choose>
+                            <when test="type=='t'.toString()">
+                                title like concat('%',#{keyword},'%')
+                            </when>
+                            <when test="type=='w'.toString()">
+                                writer like concat('%',#{keyword},'%')
+                            </when>
+                            <when test="type=='c'.toString()">
+                                content like concat('%',#{keyword},'%')
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+</mapper>

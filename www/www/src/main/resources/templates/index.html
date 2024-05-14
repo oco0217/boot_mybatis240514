@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<th:block th:replace="~{layout :: setFragment(~{this::content})}">
+
+    <th:block th:fragment="content">
+
+        <div class="mt-4 p-5 bg-primary text-white rounded">
+<h1>하이하이여</h1>
+        <h2 th:text="${str}"></h2>
+        </div>
+    </th:block>
+
+
+</th:block>
