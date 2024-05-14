@@ -9,4 +9,9 @@
         VALUES (#{uuid}, #{saveDir}, #{fileName}, #{fileType}, #{bno}, #{fileSize})
     </insert>
 
+    <select id="getList" resultType="com.ezen.www.domain.FileVO">
+        SELECT * FROM file
+        WHERE bno = #{bno}
+    </select>
+
 </mapper>

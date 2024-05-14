@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{layout :: setFragment(~{this::content})}">
     <th:block th:fragment="content">
+        <th:block th:with="bvo=${bdto.bvo}">
         <div class="container-sm">
             <h1>Board Detail Page</h1>
             <form action="/board/modify" method="post" id="modForm">
@@ -29,7 +30,54 @@
                     <textarea name="content" id="content" cols="50" rows="5"
                               class="form-control" readonly>[[${bvo.content}]]
                     </textarea>
+
                 </div>
+
+                <!-- FIle upload 표시라인 -->
+
+                <div class="mb-3">
+
+                    <ul class="list-group list-group-flush">
+                        <th:block th:each="fvo : ${bdto.flist}">
+
+                        <li class="list-group-item">
+                            <div>
+
+                            <!-- 사진일 경우 -->
+                            <th:block th:if="${fvo.fileType ne 0}">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
+                                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                        <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54L1 12.5v-9a.5.5 0 0 1 .5-.5z"/>
+                                    </svg>
+                                </div>
+
+                                <img th:src="@{|/upload/${fvo.saveDir}/${fvo.uuid}_th_${fvo.fileName}|}">
+                            </th:block>>
+                            <!-- 사진이 아닐 경우 -->
+                            <th:block th:if="${fvo.fileType eq 0}">
+                                <a href="/up/${fvo.saveDir }/${fvo.uuid}_${fvo.fileName}" download="${fvo.fileName }">
+                                    <!-- 파일 타입이 0인 경우 아이콘 모양 하나 가져와서 넣기 -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-file-earmark-arrow-down" viewBox="0 0 16 16">
+                                        <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
+                                        <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                                    </svg>
+                                </a>
+                            </th:block>
+
+                            <div>[[${fvo.fileName}]] ㅇㅇㅇㅇ</div>
+                            [[${fvo.regAt}]] <span class="badge text-bg-warning">[[${fvo.fileSize }]]Byte</span>
+                            </div></li>
+
+                        </th:block>
+
+
+                    </ul>
+
+                </div>
+
+
+
                 <button type="button" id="listBtn" class="btn btn-outline-primary">List</button>
                 <button type="button" id="modBtn"  class="btn btn-outline-warning">Modify</button>
                 <button type="button" id="delBtn" class="btn btn-outline-danger">Remove</button>
@@ -43,5 +91,6 @@
             </form>
         </div>
         <script th:src="@{/dist/js/boardDetail.js}"></script>
+        </th:block>
     </th:block>
 </th:block>
