@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezen.www.repository.MemberMapper">
+
+    <insert id="insert">
+        INSERT INTO member(email,pwd,nick_name)
+        VALUES (#{email},#{pwd},#{nickName})
+    </insert>
+
+    <insert id="insertAuth">
+        INSERT INTO auth_member
+        VALUES (#{email}, 'ROLE_USER')
+    </insert>
+
+    <select id="selectEmail" resultType="com.ezen.www.domain.MemberVO">
+        SELECT * FROM member
+        WHERE
+        email = #{email}
+    </select>
+    
+    <select id="selectAuths" resultType="com.ezen.www.domain.AuthVO">
+        SELECT * FROM auth_member
+        WHERE
+        email = #{email}
+    </select>
+    
+    <update id="lastLogin">
+        UPDATE member SET
+        last_login = now()
+        WHERE
+        email = #{email}
+    </update>
+
+    <select id="getList" resultType="com.ezen.www.domain.MemberVO">
+        SELECT * FROM member
+    </select>
+
+    <select id="getAuthList" resultType="com.ezen.www.domain.AuthVO">
+        SELECT * FROM auth_member
+        WHERE
+        email = #{email}
+    </select>
+    
+    <update id="update">
+        UPDATE member SET
+        nick_name = #{nickName}
+        <if test="pwd != null">
+            ,pwd = #{pwd}
+        </if>
+        WHERE
+        email = #{email}
+    </update>
+    
+    <delete id="authRemove">
+        DELETE FROM auth_member
+        WHERE
+        email = #{email}
+    </delete>
+    
+    <delete id="remove">
+        DELETE FROM member
+        WHERE
+        email = #{email}
+    </delete>
+
+</mapper>

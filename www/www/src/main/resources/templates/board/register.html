@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <th:block th:replace="~{layout :: setFragment(~{this::content})}">
 
     <th:block th:fragment="content">
@@ -13,7 +13,8 @@
                     <input type="text" class="form-control" id="t" placeholder="title" name="title">
                 </div>
                 <div class="mb-3">
-                    <label for="w" class="form-label">writer</label> <input type="text" class="form-control" id="w" placeholder="writer" name="writer">
+                    <label for="w" class="form-label">writer</label> <input type="text" class="form-control" id="w" placeholder="writer" name="writer"
+                      th:value="${#authentication.getPrincipal().mvo.nickName}" readonly>
                 </div>
                 <div class="mb-3">
                     <label for="w" class="form-label">content</label><textarea class="form-control" id="c" name="content" aria-label="With textarea"></textarea>

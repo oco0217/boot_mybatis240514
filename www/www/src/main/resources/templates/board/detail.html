@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <th:block th:replace="~{layout :: setFragment(~{this::content})}">
     <th:block th:fragment="content">
         <th:block th:with="bvo=${bdto.bvo}">
@@ -53,7 +53,7 @@
                                 </div>
 
                                 <img th:src="@{|/upload/${fvo.saveDir}/${fvo.uuid}_th_${fvo.fileName}|}">
-                            </th:block>>
+                            </th:block>
                             <!-- 사진이 아닐 경우 -->
                             <th:block th:if="${fvo.fileType eq 0}">
                                 <a href="/up/${fvo.saveDir }/${fvo.uuid}_${fvo.fileName}" download="${fvo.fileName }">
@@ -65,7 +65,7 @@
                                 </a>
                             </th:block>
 
-                            <div>[[${fvo.fileName}]] ㅇㅇㅇㅇ</div>
+                            <div>[[${fvo.fileName}]]</div>
                             [[${fvo.regAt}]] <span class="badge text-bg-warning">[[${fvo.fileSize }]]Byte</span>
                             </div></li>
 
@@ -79,8 +79,10 @@
 
 
                 <button type="button" id="listBtn" class="btn btn-outline-primary">List</button>
+                <th:block th:if="${bvo.writer} eq ${#authentication.getPrincipal().mvo.nickName}">
                 <button type="button" id="modBtn"  class="btn btn-outline-warning">Modify</button>
                 <button type="button" id="delBtn" class="btn btn-outline-danger">Remove</button>
+                </th:block>
 
             </form>
 
@@ -89,8 +91,74 @@
             <form action="/board/remove" method="post" id="delForm" style="display:none">
                 <input type="hidden" name="bno" th:value="${bvo.bno}">
             </form>
+
+            <br>
+            <hr>
+
+            <!-- 댓글 등록 라인 -->
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="cmtWriter" th:text="${#authentication.getPrincipal().mvo.nickName}"></span> <input
+                    type="text" id="cmtText" class="form-control"
+                    placeholder="Add Comment..." aria-label="Username"
+                    aria-describedby="basic-addon1">
+                <button type="button" id="cmtAddBtn" class="btn btn-secondary">댓글
+                    등록</button>
+            </div>
+
+            <!-- 댓글 출력 라인 -->
+
+            <ul class="list-group list-group-flush" id="cmtListArea">
+                <li class="list-group-item">
+                    <div class="input-group mb-3">
+                        <div class="fw-bold">Writer</div>
+                        content
+                    </div> <span class="badge rounded-pill text-bg-warning">등록시간(regDate)</span>
+                </li>
+            </ul>
+
+            <!-- 댓글 더보기 버튼 -->
+            <!-- visibility : disable이랑 다르게 모양이 흐트러지지 않는다 -->
+            <div class="d-grid gap-2 col-3 mx-auto">
+                <button type="button" id="moreBtn" data-page="1" class="btn btn-outline-secondary"
+                        style="visibility: hidden">More +</button>
+            </div>
+
+            <!-- 모달창 라인 -->
+
+            <div class="modal" id="myModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Writer</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" class="form-control" id="cmtTextMod">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="cmtModBtn">modify</button>
+                            <button type="button" class="btn btn-secondary"data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <hr>
+
         </div>
+
+
         <script th:src="@{/dist/js/boardDetail.js}"></script>
+            <script th:inline="javascript">
+                const bnoVal = [[${bvo.bno}]];
+                const nickName = [[${#authentication.getPrincipal().mvo.nickName}]];
+            </script>
+            <script th:src="@{/dist/js/boardDetailComment.js}"></script>
+            <script>
+                spreadCommentList(bnoVal);
+            </script>
         </th:block>
     </th:block>
 </th:block>

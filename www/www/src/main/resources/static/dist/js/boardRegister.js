@@ -48,3 +48,13 @@ document.addEventListener('change',(e)=>{
         
     }
 })
+
+
+
+document.getElementById('memberDeleteLink').addEventListener('click',(e)=>{
+    
+    e.preventDefault();
+    if(confirm("정말 회원탈퇴를 하시겠습니까?")){
+        document.getElementById('memberDeleteForm').submit();
+    }
+})

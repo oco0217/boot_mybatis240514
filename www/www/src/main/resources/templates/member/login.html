@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<th:block th:replace="~{layout :: setFragment(~{this::content})}">
+
+    <th:block th:fragment="content">
+
+        <div class="mt-4 p-5 bg-primary text-white rounded">
+            <h1>Member Login Page</h1>
+        </div>
+
+        <div class="container-md">
+
+            <form action="/member/login" method="post">
+
+                <div class="mb-3">
+                    <label for="e" class="form-label">E-Mail</label> <input type="text"
+                                                                            class="form-control" id="e" placeholder="E-mail입력..." name="email">
+                </div>
+                <div class="mb-3">
+                    <label for="p" class="form-label">PW</label> <input type="password"
+                                                                        class="form-control" id="p" placeholder="Password 입력..." name="pwd">
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="loginBtn">로그인</button>
+
+            </form>
+
+        </div>
+
+    </th:block>
+
+
+</th:block>
