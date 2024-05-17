@@ -8,13 +8,28 @@
         INSERT INTO comment (bno,writer,content)
         VALUES (#{bno},#{writer},#{content})
     </insert>
+    
+    <select id="bnoToTotalCount" resultType="int">
+        SELECT COUNT(bno) FROM comment
+        WHERE
+        bno = #{bno}
+    </select>
 
     <select id="getList" resultType="com.ezen.www.domain.CommentVO">
         SELECT * FROM comment
         WHERE
         bno = #{bno}
-        ORDER BY bno DESC
+        ORDER BY cno DESC
+        LIMIT #{pgvo.pageStart},#{pgvo.qty}
     </select>
+
+    <update id="modify">
+        UPDATE comment SET
+        content = #{content},
+        mod_at = now()
+        WHERE
+        cno = #{cno}
+    </update>
     
     <delete id="remove">
         DELETE FROM comment

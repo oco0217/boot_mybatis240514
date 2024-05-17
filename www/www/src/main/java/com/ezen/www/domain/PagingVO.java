@@ -30,7 +30,7 @@ public class PagingVO {
     }
 
     public int getPageStart(){
-        return (this.pageNo-1) * 10; //DB의 limit 앞의 값 설정 #{pageStart}
+        return (this.pageNo-1) * this.qty; //DB의 limit 앞의 값 설정 #{pageStart}
     }
 
     public String[] getTypeToArray(){
